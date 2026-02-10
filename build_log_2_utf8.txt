@@ -1,0 +1,219 @@
+﻿
+> temp_app@0.1.0 build
+> next build
+
+node.exe : ΓÜá 
+Warning: Next.js 
+inferred your 
+workspace root, but 
+it may not be correct.
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (ΓÜá Warnin   
+ g: Ne...not be co    
+rrect.:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+ We detected multiple 
+lockfiles and 
+selected the 
+directory of C:\Users\
+lwazi\package-lock.jso
+n as the root 
+directory.
+ To silence this 
+warning, set 
+`turbopack.root` in 
+your Next.js config, 
+or consider removing 
+one of the lockfiles 
+if it's not needed.
+   See https://nextjs.
+org/docs/app/api-refer
+ence/config/next-confi
+g-js/turbopack#root-di
+rectory for more 
+information.
+ Detected additional 
+lockfiles: 
+   * C:\Users\lwazi\ha
+zelnailz\package-lock.
+json
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Error: Cannot apply 
+unknown utility class 
+`border-border`. Are 
+you using CSS modules 
+or similar and 
+missing `@reference`? 
+https://tailwindcss.co
+m/docs/functions-and-d
+irectives#reference-di
+rective
+    [2m[at 
+onInvalidCandidate (C:
+\Users\lwazi\hazelnail
+z\node_modules\tailwin
+dcss\dist\lib.js:21:13
+14)][0m
+    [2m[at Te (C:\Use
+rs\lwazi\hazelnailz\no
+de_modules\tailwindcss
+\dist\lib.js:16:36652)
+][0m
+    [2m[at C:\Users\l
+wazi\hazelnailz\node_m
+odules\tailwindcss\dis
+t\lib.js:21:355][0m
+    [2m[at Rr (C:\Use
+rs\lwazi\hazelnailz\no
+de_modules\tailwindcss
+\dist\lib.js:3:1718)]
+[0m
+    [2m[at _ (C:\User
+s\lwazi\hazelnailz\nod
+e_modules\tailwindcss\
+dist\lib.js:3:1377)][
+0m
+    [2m[at $e (C:\Use
+rs\lwazi\hazelnailz\no
+de_modules\tailwindcss
+\dist\lib.js:21:172)]
+[0m
+    [2m[at un (C:\Use
+rs\lwazi\hazelnailz\no
+de_modules\tailwindcss
+\dist\lib.js:38:294)]
+[0m
+    [2m[at process.pr
+ocessTicksAndRejection
+s (node:internal/proce
+ss/task_queues:105:5)]
+[0m
+    [2m[at async cn (
+C:\Users\lwazi\hazelna
+ilz\node_modules\tailw
+indcss\dist\lib.js:38:
+631)][0m
+    [2m[at async Xr (
+C:\Users\lwazi\hazelna
+ilz\node_modules\@tail
+windcss\node\dist\inde
+x.js:10:3417)][0m
+
+> Build error occurred
+Error: Turbopack 
+build failed with 1 
+errors:
+./hazelnailz/src/app/g
+lobals.css
+Error evaluating 
+Node.js code
+CssSyntaxError: 
+tailwindcss: C:\Users\
+lwazi\hazelnailz\src\a
+pp\globals.css:1:1: 
+Cannot apply unknown 
+utility class 
+`border-border`. Are 
+you using CSS modules 
+or similar and 
+missing `@reference`? 
+https://tailwindcss.co
+m/docs/functions-and-d
+irectives#reference-di
+rective
+    at Input.error (ha
+zelnailz/node_modules/
+postcss/lib/input.js:1
+35:16) [C:\Users\lwazi
+\hazelnailz\.next\buil
+d\chunks\c11e3_89add47
+e._.js:4651:22]
+    at Root.error (haz
+elnailz/node_modules/p
+ostcss/lib/node.js:146
+:32) [C:\Users\lwazi\h
+azelnailz\.next\build\
+chunks\c11e3_89add47e.
+_.js:928:38]
+    [at Object.Once (C
+:\Users\lwazi\hazelnai
+lz\node_modules\@tailw
+indcss\postcss\dist\in
+dex.js:10:6911)]
+    [at process.proces
+sTicksAndRejections (n
+ode:internal/process/t
+ask_queues:105:5)]
+    at async 
+LazyResult.runAsync (h
+azelnailz/node_modules
+/postcss/lib/lazy-resu
+lt.js:293:11) [C:\User
+s\lwazi\hazelnailz\.ne
+xt\build\chunks\c11e3_
+89add47e._.js:6206:21]
+    at async 
+transform (turbopack:/
+//[turbopack-node]/tra
+nsforms/postcss.ts:70:
+34) [C:\Users\lwazi\ha
+zelnailz\.next\build\c
+hunks\[root-of-the-ser
+ver]__2cb07ddc._.js:14
+6:36]
+    at async run (turb
+opack:///[turbopack-no
+de]/ipc/evaluate.ts:92
+:23) [C:\Users\lwazi\h
+azelnailz\.next\build\
+chunks\[root-of-the-se
+rver]__cf352261._.js:4
+43:31]
+
+Import trace:
+  Client Component 
+Browser:
+    ./hazelnailz/src/a
+pp/globals.css 
+[Client Component 
+Browser]
+    ./hazelnailz/src/a
+pp/layout.tsx [Server 
+Component]
+
+
+    at async 
+transform (turbopack:/
+//[turbopack-node]/tra
+nsforms/postcss.ts:70:
+34) [C:\Users\lwazi\ha
+zelnailz\.next\build\c
+hunks\[root-of-the-ser
+ver]__2cb07ddc._.js:14
+6:36])
+    at async run (turb
+opack:///[turbopack-no
+de]/ipc/evaluate.ts:92
+:23) [C:\Users\lwazi\h
+azelnailz\.next\build\
+chunks\[root-of-the-se
+rver]__cf352261._.js:4
+43:31])

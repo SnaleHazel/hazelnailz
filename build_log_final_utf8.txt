@@ -1,0 +1,109 @@
+﻿
+> temp_app@0.1.0 build
+> next build
+
+node.exe : ΓÜá 
+Warning: Next.js 
+inferred your 
+workspace root, but 
+it may not be correct.
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (ΓÜá Warnin   
+ g: Ne...not be co    
+rrect.:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+ We detected multiple 
+lockfiles and 
+selected the 
+directory of C:\Users\
+lwazi\package-lock.jso
+n as the root 
+directory.
+ To silence this 
+warning, set 
+`turbopack.root` in 
+your Next.js config, 
+or consider removing 
+one of the lockfiles 
+if it's not needed.
+   See https://nextjs.
+org/docs/app/api-refer
+ence/config/next-confi
+g-js/turbopack#root-di
+rectory for more 
+information.
+ Detected additional 
+lockfiles: 
+   * C:\Users\lwazi\ha
+zelnailz\package-lock.
+json
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 19.5s
+  Running TypeScript ...
+Failed to compile.
+
+./src/app/gallery/page
+.tsx:59:33
+Type error: Binding 
+element 'index' 
+implicitly has an 
+'any' type.
+
+[0m [90m 57 |[39m  
+                   lay
+out[33m=[39m[32m"co
+lumns"[39m
+ [90m 58 |[39m      
+               photos
+[33m=[39m{photos}
+[31m[1m>[22m[39m[
+90m 59 |[39m         
+            
+onClick[33m=[39m{({ 
+index }) [33m=>[39m 
+setIndex(index)}
+ [90m    |[39m      
+                      
+     
+[31m[1m^[22m[39m
+ [90m 60 |[39m      
+               columns
+[33m=[39m{(container
+Width) [33m=>[39m {
+ [90m 61 |[39m      
+                   
+[36mif[39m 
+(containerWidth 
+[33m<[39m 
+[35m400[39m) 
+[36mreturn[39m 
+[35m1[39m[33m;[39m
+ [90m 62 |[39m      
+                   
+[36mif[39m 
+(containerWidth 
+[33m<[39m 
+[35m800[39m) 
+[36mreturn[39m [35m
+2[39m[33m;[39m[0m
+Next.js build worker 
+exited with code: 1 
+and signal: null
