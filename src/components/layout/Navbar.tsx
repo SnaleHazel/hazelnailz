@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SignInButton, SignUpButton, UserButton, Show } from "@clerk/nextjs";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
     { name: "Home", href: "/" },
@@ -37,6 +38,18 @@ export function Navbar() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    // Prevent scroll when mobile menu is open
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, [isMobileMenuOpen]);
 
     return (
         <nav
@@ -117,10 +130,12 @@ export function Navbar() {
                 {/* Mobile Menu Toggle */}
                 <button
                     className={cn(
-                        "md:hidden p-2 rounded-lg transition-colors cursor-pointer",
-                        useDarkText
-                            ? "text-[#130E0E] hover:bg-[#D7C2C2]/30"
-                            : "text-white hover:bg-white/10"
+                        "md:hidden p-2 rounded-lg transition-all duration-300 cursor-pointer relative z-[70]",
+                        isMobileMenuOpen
+                            ? "text-[#130E0E] hover:bg-[#130E0E]/5"
+                            : useDarkText
+                                ? "text-[#130E0E] hover:bg-[#D7C2C2]/30"
+                                : "text-white hover:bg-white/10"
                     )}
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     aria-label="Toggle menu"
@@ -129,55 +144,110 @@ export function Navbar() {
                 </button>
             </div>
 
-            {/* Mobile Menu */}
-            <div className={cn(
-                "md:hidden absolute left-0 right-0 top-full mt-2 mx-4 glass rounded-2xl shadow-xl overflow-hidden transition-all duration-300",
-                isMobileMenuOpen
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 -translate-y-4 pointer-events-none"
-            )}>
-                <div className="p-4 flex flex-col gap-2">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            href={link.href}
-                            className="text-[#130E0E]/70 hover:text-[#130E0E] py-3 px-4 rounded-xl hover:bg-[#D7C2C2]/30 transition-colors font-medium cursor-pointer"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            {link.name}
-                        </Link>
-                    ))}
-                    <div className="flex flex-col gap-2 pt-2 border-t border-[#D7C2C2]/30">
-                        <Show when="signed-out">
-                            <SignInButton mode="modal">
-                                <Button variant="outline" className="w-full rounded-xl border-[#130E0E]/20 text-[#130E0E] py-6">
-                                    Sign In
-                                </Button>
-                            </SignInButton>
-                            <SignUpButton mode="modal">
-                                <Button className="w-full rounded-xl gradient-rose text-[#130E0E] font-semibold py-6">
-                                    Sign Up
-                                </Button>
-                            </SignUpButton>
-                        </Show>
-                        <Show when="signed-in">
-                            <div className="flex items-center justify-between px-4 py-2 bg-[#D7C2C2]/10 rounded-xl">
-                                <span className="text-sm font-medium text-[#130E0E]/70">Account</span>
-                                <UserButton />
-                            </div>
-                        </Show>
-                    </div>
-
-                    <Button
-                        asChild
-                        className="w-full mt-2 rounded-xl border border-[#130E0E]/10 bg-transparent text-[#130E0E] font-semibold py-6 cursor-pointer"
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className="fixed inset-0 z-[60] bg-[#FAF8F8]/98 backdrop-blur-xl md:hidden overflow-hidden"
                     >
-                        <Link href="/booking" onClick={() => setIsMobileMenuOpen(false)}>
-                            Book Appointment
-                        </Link>
-                    </Button>
-                </div>
-            </div>
+                        {/* Background Decor */}
+                        <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+                            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[40%] bg-[#DFC6C8]/20 blur-[120px] rounded-full" />
+                            <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[50%] bg-[#DFC6C8]/15 blur-[120px] rounded-full" />
+                        </div>
+
+                        <div className="relative h-full flex flex-col items-center justify-center p-8">
+                            <motion.div 
+                                initial="closed"
+                                animate="open"
+                                variants={{
+                                    open: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+                                    closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } }
+                                }}
+                                className="flex flex-col items-center gap-8 w-full max-w-sm"
+                            >
+                                {navLinks.map((link) => (
+                                    <motion.div
+                                        key={link.name}
+                                        variants={{
+                                            open: { opacity: 1, y: 0 },
+                                            closed: { opacity: 0, y: 20 }
+                                        }}
+                                        className="w-full"
+                                    >
+                                        <Link
+                                            href={link.href}
+                                            className={cn(
+                                                "block text-center text-4xl font-serif font-bold transition-all duration-300 py-2",
+                                                pathname === link.href ? "text-[#130E0E]" : "text-[#130E0E]/40 hover:text-[#130E0E]"
+                                            )}
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    </motion.div>
+                                ))}
+
+                                <motion.div
+                                    variants={{
+                                        open: { opacity: 1, y: 0 },
+                                        closed: { opacity: 0, y: 20 }
+                                    }}
+                                    className="w-full pt-8 flex flex-col gap-4"
+                                >
+                                    <Show when="signed-out">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <SignInButton mode="modal">
+                                                <Button variant="outline" className="rounded-full border-[#130E0E]/10 text-[#130E0E] py-7 text-lg">
+                                                    Sign In
+                                                </Button>
+                                            </SignInButton>
+                                            <SignUpButton mode="modal">
+                                                <Button className="rounded-full gradient-rose text-[#130E0E] font-semibold py-7 text-lg border-0 shadow-lg shadow-[#DFC6C8]/40">
+                                                    Sign Up
+                                                </Button>
+                                            </SignUpButton>
+                                        </div>
+                                    </Show>
+
+                                    <Show when="signed-in">
+                                        <div className="flex flex-col items-center gap-4 p-6 bg-[#130E0E]/5 rounded-3xl border border-[#130E0E]/5">
+                                            <span className="text-sm font-medium text-[#130E0E]/60 uppercase tracking-widest">Your Account</span>
+                                            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-16 h-16" } }} />
+                                        </div>
+                                    </Show>
+
+                                    <Button
+                                        asChild
+                                        className="w-full mt-4 rounded-full bg-[#130E0E] text-white py-8 text-xl font-semibold shadow-2xl shadow-[#130E0E]/30"
+                                    >
+                                        <Link href="/booking" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-center gap-3">
+                                            Book Appointment
+                                            <ArrowRight className="w-6 h-6" />
+                                        </Link>
+                                    </Button>
+                                </motion.div>
+                            </motion.div>
+
+                            {/* Footer hint */}
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 1 }}
+                                className="absolute bottom-12 left-0 w-full text-center"
+                            >
+                                <span className="text-[10px] font-medium tracking-[0.4em] uppercase text-[#130E0E]/20">
+                                    Hazelnailz x Ikonique
+                                </span>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 }
