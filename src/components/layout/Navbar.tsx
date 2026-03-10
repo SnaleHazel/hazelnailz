@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { SignInButton, SignUpButton, UserButton, Show } from "@clerk/nextjs";
 
 const navLinks = [
     { name: "Home", href: "/" },
@@ -84,9 +85,30 @@ export function Navbar() {
                             {link.name}
                         </Link>
                     ))}
+                    <div className="flex items-center gap-2 ml-4">
+                        <Show when="signed-out">
+                            <SignInButton mode="modal">
+                                <Button variant="ghost" className={cn(
+                                    "rounded-full font-medium transition-all",
+                                    useDarkText ? "text-[#130E0E]" : "text-white"
+                                )}>
+                                    Sign In
+                                </Button>
+                            </SignInButton>
+                            <SignUpButton mode="modal">
+                                <Button className="rounded-full gradient-rose text-[#130E0E] font-semibold px-6 hover-glow border-0">
+                                    Sign Up
+                                </Button>
+                            </SignUpButton>
+                        </Show>
+                        <Show when="signed-in">
+                            <UserButton />
+                        </Show>
+                    </div>
+
                     <Button
                         asChild
-                        className="ml-4 rounded-full gradient-rose text-[#130E0E] font-semibold px-6 hover-glow border-0 cursor-pointer"
+                        className="ml-2 rounded-full border border-[#DFC6C8]/30 bg-transparent text-[#DFC6C8] hover:bg-[#DFC6C8]/10 font-semibold px-6 cursor-pointer hidden lg:flex"
                     >
                         <Link href="/booking">Book Now</Link>
                     </Button>
@@ -125,9 +147,30 @@ export function Navbar() {
                             {link.name}
                         </Link>
                     ))}
+                    <div className="flex flex-col gap-2 pt-2 border-t border-[#D7C2C2]/30">
+                        <Show when="signed-out">
+                            <SignInButton mode="modal">
+                                <Button variant="outline" className="w-full rounded-xl border-[#130E0E]/20 text-[#130E0E] py-6">
+                                    Sign In
+                                </Button>
+                            </SignInButton>
+                            <SignUpButton mode="modal">
+                                <Button className="w-full rounded-xl gradient-rose text-[#130E0E] font-semibold py-6">
+                                    Sign Up
+                                </Button>
+                            </SignUpButton>
+                        </Show>
+                        <Show when="signed-in">
+                            <div className="flex items-center justify-between px-4 py-2 bg-[#D7C2C2]/10 rounded-xl">
+                                <span className="text-sm font-medium text-[#130E0E]/70">Account</span>
+                                <UserButton />
+                            </div>
+                        </Show>
+                    </div>
+
                     <Button
                         asChild
-                        className="w-full mt-2 rounded-xl gradient-rose text-[#130E0E] font-semibold py-6 cursor-pointer"
+                        className="w-full mt-2 rounded-xl border border-[#130E0E]/10 bg-transparent text-[#130E0E] font-semibold py-6 cursor-pointer"
                     >
                         <Link href="/booking" onClick={() => setIsMobileMenuOpen(false)}>
                             Book Appointment

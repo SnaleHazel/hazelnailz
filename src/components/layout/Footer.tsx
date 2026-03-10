@@ -79,17 +79,52 @@ export function Footer() {
                                 <span className="text-sm">bookings@hazelnailz.co.za</span>
                             </a>
                             <a
-                                href="tel:+27123456789"
+                                href="tel:+27754462264"
                                 className="flex items-center gap-3 text-[#B6AFAE] hover:text-[#DFC6C8] transition-colors cursor-pointer"
                             >
                                 <Phone className="w-4 h-4 text-[#DFC6C8]" />
-                                <span className="text-sm">+27 12 345 6789</span>
+                                <span className="text-sm">+27 75 446 2264</span>
                             </a>
-                            <div className="flex items-start gap-3 text-[#B6AFAE]">
+                            <a
+                                href="https://maps.google.com/?q=10+Lawson+Place+Queensburgh+KwaZulu-Natal+4093+South+Africa"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-start gap-3 text-[#B6AFAE] hover:text-[#DFC6C8] transition-colors cursor-pointer"
+                            >
                                 <MapPin className="w-4 h-4 text-[#DFC6C8] mt-0.5" />
-                                <span className="text-sm">Johannesburg, South Africa</span>
+                                <span className="text-sm">10 Lawson Place, Queensburgh,<br />KwaZulu-Natal, 4093</span>
+                            </a>
+                            <div className="mt-6">
+                                <h5 className="font-semibold text-white mb-3 text-xs uppercase tracking-wider">Business Hours</h5>
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex justify-between">
+                                        <span>Tuesday - Sunday</span>
+                                        <span className="text-[#DFC6C8]">07:00 - 17:00</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span>Monday</span>
+                                        <span className="text-[#DFC6C8]">Closed</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                {/* Google Maps Embed */}
+                <div className="mt-12">
+                    <h3 className="font-semibold text-white mb-6 uppercase tracking-wider text-sm">Visit Us</h3>
+                    <div className="relative w-full h-64 rounded-2xl overflow-hidden border border-[#2A2222]">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3459.4967099966684!2d30.91658887480282!3d-29.87878522361287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ef7aa97d3641965%3A0xb4aaa165a5690039!2s10%20Lawson%20Pl%2C%20Malvern%2C%20Queensburgh%2C%204055!5e0!3m2!1sen!2sza!4v1770856263911!5m2!1sen!2sza"
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title="Hazelnailz Location - 10 Lawson Place, Queensburgh"
+                        ></iframe>
                     </div>
                 </div>
             </div>
