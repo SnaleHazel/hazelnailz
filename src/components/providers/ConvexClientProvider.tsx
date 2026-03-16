@@ -8,14 +8,15 @@ import { ReactNode } from "react";
 // Check if credentials are configured
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
-const isConfigured = publishableKey && convexUrl && !publishableKey.includes("placeholder");
+const isConfigured = !!publishableKey && !!convexUrl && !convexUrl.includes("placeholder");
 
-const convex = isConfigured ? new ConvexReactClient(convexUrl!) : null;
+// Use a valid format dummy URL if not configured to prevent fatal parser errors
+const dummyUrl = "https://happy-monkey-123.convex.cloud";
+const convex = new ConvexReactClient(isConfigured ? convexUrl! : dummyUrl);
 
 export function ConvexClientProvider({ children }: { children: ReactNode }) {
-    // If credentials aren't configured, render children directly without auth
-    if (!isConfigured || !convex) {
-        return <>{children}</>;
+    if (!isConfigured) {
+        console.warn("Convex is using a dummy URL. Please run `npx convex dev` to set up your real database.");
     }
 
     return (

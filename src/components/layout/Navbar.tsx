@@ -61,25 +61,19 @@ export function Navbar() {
             )}
         >
             <div className="container mx-auto flex items-center justify-between">
-                {/* Logo */}
-                <Link href="/" className="group flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-xl gradient-rose flex items-center justify-center group-hover:scale-105 transition-transform">
-                        <Sparkles className="w-5 h-5 text-[#130E0E]" />
-                    </div>
-                    <div className="flex flex-col">
-                        <span className={cn(
-                            "font-serif text-xl font-bold tracking-tight transition-colors",
-                            useDarkText ? "text-[#130E0E]" : "text-white"
-                        )}>
-                            Hazelnailz
-                        </span>
-                        <span className={cn(
-                            "text-[10px] font-medium tracking-[0.2em] uppercase -mt-1 transition-colors",
-                            useDarkText ? "text-[#9D8587]" : "text-[#DFC6C8]"
-                        )}>
-                            x Ikonique
-                        </span>
-                    </div>
+                <Link href="/" className="group flex flex-col">
+                    <span className={cn(
+                        "font-serif text-2xl font-bold tracking-tight transition-all duration-300 group-hover:scale-[1.02]",
+                        useDarkText ? "text-[#130E0E]" : "text-white"
+                    )}>
+                        Hazelnailz
+                    </span>
+                    <span className={cn(
+                        "text-[10px] font-medium tracking-[0.4em] uppercase -mt-1 transition-colors",
+                        useDarkText ? "text-[#9D8587]" : "text-[#DFC6C8]"
+                    )}>
+                        x Ikonique
+                    </span>
                 </Link>
 
                 {/* Desktop Menu */}

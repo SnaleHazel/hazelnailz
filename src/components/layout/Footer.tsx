@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Instagram, Mail, Phone, MapPin, Sparkles } from "lucide-react";
+import { Instagram, Mail, Phone, MapPin, Sparkles, MessageCircle } from "lucide-react";
 
 export function Footer() {
     return (
@@ -12,15 +12,10 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {/* Brand */}
                     <div className="lg:col-span-2">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-12 h-12 rounded-xl gradient-rose flex items-center justify-center">
-                                <Sparkles className="w-6 h-6 text-[#130E0E]" />
-                            </div>
-                            <div>
-                                <h3 className="font-serif text-2xl font-bold text-white">Hazelnailz</h3>
-                                <span className="text-xs font-medium tracking-[0.2em] uppercase text-[#DFC6C8]">x Ikonique</span>
-                            </div>
-                        </div>
+                        <Link href="/" className="inline-block mb-6 group">
+                            <h3 className="font-serif text-3xl font-bold text-white transition-all group-hover:scale-[1.01]">Hazelnailz</h3>
+                            <span className="text-[10px] font-medium tracking-[0.4em] uppercase text-[#DFC6C8] -mt-1 block">x Ikonique</span>
+                        </Link>
                         <p className="text-[#B6AFAE] max-w-md leading-relaxed mb-6">
                             Experience premium nail care where luxury meets precision.
                             Dedicated to providing the highest quality acrylics, gels, and nail art in a serene environment.
@@ -84,6 +79,15 @@ export function Footer() {
                             >
                                 <Phone className="w-4 h-4 text-[#DFC6C8]" />
                                 <span className="text-sm">+27 75 446 2264</span>
+                            </a>
+                            <a
+                                href="https://wa.me/27754462264?text=Hi%20Hazelnailz%2C%20I%20would%20like%20to%20enquire%20about%20a%20booking."
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-3 text-[#B6AFAE] hover:text-[#DFC6C8] transition-colors cursor-pointer"
+                            >
+                                <MessageCircle className="w-4 h-4 text-[#DFC6C8]" />
+                                <span className="text-sm">WhatsApp Chat</span>
                             </a>
                             <a
                                 href="https://maps.google.com/?q=10+Lawson+Place+Queensburgh+KwaZulu-Natal+4093+South+Africa"

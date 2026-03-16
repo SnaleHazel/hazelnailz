@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Star, Shield, Heart } from "lucide-react";
@@ -188,7 +187,6 @@ export default function Home() {
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </main>
   );
 }
