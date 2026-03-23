@@ -76,111 +76,125 @@ export function Navbar() {
     }, [isMobileMenuOpen]);
 
     return (
-        <nav
-            className={cn(
-                "fixed z-50 transition-all duration-500 ease-out",
-                isScrolled
-                    ? "top-4 left-4 right-4 glass rounded-2xl shadow-lg py-3 px-6"
-                    : "top-0 left-0 right-0 bg-transparent py-6 px-4"
-            )}
-        >
-            <div className="container mx-auto flex items-center justify-between">
-                <Link href="/" className="group flex flex-col">
-                    <span className={cn(
-                        "font-serif text-2xl font-bold tracking-tight transition-all duration-300 group-hover:scale-[1.02]",
-                        useDarkText ? "text-[#130E0E]" : "text-white"
-                    )}>
-                        Hazelnailz
-                    </span>
-                    <span className={cn(
-                        "text-[10px] font-medium tracking-[0.4em] uppercase -mt-1 transition-colors",
-                        useDarkText ? "text-[#9D8587]" : "text-[#DFC6C8]"
-                    )}>
-                        x Ikonique
-                    </span>
-                </Link>
+        <>
+            <nav
+                className={cn(
+                    "fixed z-50 transition-all duration-500 ease-out",
+                    isScrolled
+                        ? "top-4 left-4 right-4 glass rounded-2xl shadow-lg py-3 px-6"
+                        : "top-0 left-0 right-0 bg-transparent py-6 px-4"
+                )}
+            >
+                <div className="container mx-auto flex items-center justify-between">
+                    <Link href="/" className="group flex flex-col">
+                        <span className={cn(
+                            "font-serif text-2xl font-bold tracking-tight transition-all duration-300 group-hover:scale-[1.02]",
+                            useDarkText ? "text-[#130E0E]" : "text-white"
+                        )}>
+                            Hazelnailz
+                        </span>
+                        <span className={cn(
+                            "text-[10px] font-medium tracking-[0.4em] uppercase -mt-1 transition-colors",
+                            useDarkText ? "text-[#9D8587]" : "text-[#DFC6C8]"
+                        )}>
+                            x Ikonique
+                        </span>
+                    </Link>
 
-                {/* Desktop Menu */}
-                <div className="hidden md:flex items-center gap-1">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            href={link.href}
-                            className={cn(
-                                "px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer",
-                                useDarkText
-                                    ? "text-[#130E0E]/70 hover:text-[#130E0E] hover:bg-[#D7C2C2]/30"
-                                    : "text-white/80 hover:text-white hover:bg-white/10"
-                            )}
+                    {/* Desktop Menu */}
+                    <div className="hidden md:flex items-center gap-1">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className={cn(
+                                    "px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer",
+                                    useDarkText
+                                        ? "text-[#130E0E]/70 hover:text-[#130E0E] hover:bg-[#D7C2C2]/30"
+                                        : "text-white/80 hover:text-white hover:bg-white/10"
+                                )}
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
+                        <div className="flex items-center gap-2 ml-4">
+                            <Show when="signed-out">
+                                <SignInButton mode="modal">
+                                    <Button variant="ghost" className={cn(
+                                        "rounded-full font-medium transition-all",
+                                        useDarkText ? "text-[#130E0E]" : "text-white"
+                                    )}>
+                                        Sign In
+                                    </Button>
+                                </SignInButton>
+                                <SignUpButton mode="modal">
+                                    <Button className="rounded-full gradient-rose text-[#130E0E] font-semibold px-6 hover-glow border-0">
+                                        Sign Up
+                                    </Button>
+                                </SignUpButton>
+                            </Show>
+                            <Show when="signed-in">
+                                <AdminLink />
+                                <UserButton>
+                                    <UserButton.MenuItems>
+                                        <UserButton.Link label="My Profile" labelIcon={<LayoutDashboard className="w-4 h-4" />} href="/profile" />
+                                    </UserButton.MenuItems>
+                                </UserButton>
+                            </Show>
+                        </div>
+
+                        <Button
+                            asChild
+                            className="ml-2 rounded-full gradient-rose text-[#130E0E] font-semibold px-6 hover-glow border-0 hidden lg:flex"
                         >
-                            {link.name}
-                        </Link>
-                    ))}
-                    <div className="flex items-center gap-2 ml-4">
-                        <Show when="signed-out">
-                            <SignInButton mode="modal">
-                                <Button variant="ghost" className={cn(
-                                    "rounded-full font-medium transition-all",
-                                    useDarkText ? "text-[#130E0E]" : "text-white"
-                                )}>
-                                    Sign In
-                                </Button>
-                            </SignInButton>
-                            <SignUpButton mode="modal">
-                                <Button className="rounded-full gradient-rose text-[#130E0E] font-semibold px-6 hover-glow border-0">
-                                    Sign Up
-                                </Button>
-                            </SignUpButton>
-                        </Show>
-                        <Show when="signed-in">
-                            <AdminLink />
-                            <UserButton>
-                                <UserButton.MenuItems>
-                                    <UserButton.Link label="My Profile" labelIcon={<LayoutDashboard className="w-4 h-4" />} href="/profile" />
-                                </UserButton.MenuItems>
-                            </UserButton>
-                        </Show>
+                            <Link href="/booking">Book Now</Link>
+                        </Button>
                     </div>
 
-                    <Button
-                        asChild
-                        className="ml-2 rounded-full gradient-rose text-[#130E0E] font-semibold px-6 hover-glow border-0 hidden lg:flex"
+                    {/* Mobile Menu Toggle */}
+                    <button
+                        className={cn(
+                            "md:hidden p-2 rounded-lg transition-all duration-300 cursor-pointer relative z-[100]",
+                            isMobileMenuOpen
+                                ? "text-[#130E0E] hover:bg-[#130E0E]/5"
+                                : useDarkText
+                                    ? "text-[#130E0E] hover:bg-[#D7C2C2]/30"
+                                    : "text-white hover:bg-white/10"
+                        )}
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        aria-label="Toggle menu"
                     >
-                        <Link href="/booking">Book Now</Link>
-                    </Button>
+                        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                    </button>
                 </div>
+            </nav>
 
-                {/* Mobile Menu Toggle */}
-                <button
-                    className={cn(
-                        "md:hidden p-2 rounded-lg transition-all duration-300 cursor-pointer relative z-[70]",
-                        isMobileMenuOpen
-                            ? "text-[#130E0E] hover:bg-[#130E0E]/5"
-                            : useDarkText
-                                ? "text-[#130E0E] hover:bg-[#D7C2C2]/30"
-                                : "text-white hover:bg-white/10"
-                    )}
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    aria-label="Toggle menu"
-                >
-                    {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                </button>
-            </div>
-
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Menu Overlay — rendered OUTSIDE <nav> so it's not clipped */}
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                        className="fixed inset-0 z-[60] bg-[#FAF8F8]/98 backdrop-blur-xl md:hidden overflow-hidden"
+                        className="fixed inset-0 z-[90] bg-[#FAF8F8] backdrop-blur-xl md:hidden overflow-hidden"
+                        style={{ top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh' }}
                     >
                         {/* Background Decor */}
                         <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
                             <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[40%] bg-[#DFC6C8]/20 blur-[120px] rounded-full" />
                             <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[50%] bg-[#DFC6C8]/15 blur-[120px] rounded-full" />
+                        </div>
+
+                        {/* Close button */}
+                        <div className="absolute top-6 right-4 z-[100]">
+                            <button
+                                className="p-2 rounded-lg text-[#130E0E] hover:bg-[#130E0E]/5 transition-all"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                aria-label="Close menu"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
                         </div>
 
                         <div className="relative h-full flex flex-col items-center justify-center p-8">
@@ -285,6 +299,6 @@ export function Navbar() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </nav>
+        </>
     );
 }
