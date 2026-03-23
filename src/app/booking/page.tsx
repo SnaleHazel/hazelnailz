@@ -9,12 +9,13 @@ import { useState, useEffect } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { cn } from "@/lib/utils";
-import { Check, ChevronRight, Loader2, Sparkles, Calendar, AlertCircle } from "lucide-react";
+import { Check, ChevronRight, Loader2, Calendar, AlertCircle } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import Script from "next/script";
 import { format } from "date-fns";
+import { useForm } from "@formspree/react";
 
 // Mock Services Data
 const serviceOptions = [
@@ -56,6 +57,9 @@ export default function Booking() {
     // Convex Mutations
     const createBookingMutation = useMutation(api.bookings.createBooking);
     const confirmBookingMutation = useMutation(api.bookings.confirmBooking);
+
+    // Formspree Hook
+    const [formspreeState, sendToFormspree] = useForm("xojkkekr");
 
     // Toggle service selection
     const toggleService = (id: string) => {
@@ -124,7 +128,7 @@ export default function Booking() {
                         setLocallyBookedSlots(nextLocal);
                     }
 
-                    // 2. Update booking status in Convex
+                    // 2. Update booking status in Convex & Send Confirmation Email
                     const handleSuccess = async () => {
                         try {
                             if (confirmBookingMutation && id && !id.startsWith("offline_")) {
@@ -133,8 +137,26 @@ export default function Booking() {
                                     paystackReference: response.reference,
                                 });
                             }
+
+                            // 3. Send Confirmation Email via Formspree
+                            await sendToFormspree({
+                                email: formData.email,
+                                subject: "Booking Confirmed - Hazelnailz x Ikonique",
+                                message: `Your booking has been made for ${formattedDate} at ${time}. 
+
+Please remember to arrive 15 minutes early for your appointment to ensure we have enough time to give you the full luxury experience.
+
+Looking forward to seeing you soon and making your nails look iconic!
+
+love, Ikonique`,
+                                date: formattedDate,
+                                time: time,
+                                services: selectedServices.map(sid => serviceOptions.find(so => so.id === sid)?.name).join(", "),
+                                phone: formData.phone,
+                                name: formData.name
+                            });
                         } catch (e) {
-                            console.error("Failed to confirm booking in Convex:", e);
+                            console.error("Failed to confirm booking or send email:", e);
                         }
                         setStep(5);
                         setIsSubmitting(false);

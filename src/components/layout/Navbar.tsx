@@ -3,11 +3,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Sparkles, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SignInButton, SignUpButton, UserButton, Show } from "@clerk/nextjs";
 import { motion, AnimatePresence } from "framer-motion";
+import { useUser } from "@clerk/nextjs";
+import { isUserAdmin } from "@/lib/admin";
+import { LayoutDashboard } from "lucide-react";
 
 const navLinks = [
     { name: "Home", href: "/" },
@@ -30,6 +33,27 @@ export function Navbar() {
     // 1. We are scrolled (glass background is light/white-ish)
     // 2. OR we are on the Home page (light background)
     const useDarkText = isScrolled || isHomePage;
+
+    const { user } = useUser();
+    const isAdmin = isUserAdmin(user);
+
+    const AdminLink = () => {
+        if (!isAdmin) return null;
+        return (
+            <Link 
+                href="/admin" 
+                className={cn(
+                    "flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all",
+                    useDarkText 
+                        ? "bg-[#130E0E] text-white hover:bg-black" 
+                        : "bg-white text-[#130E0E] hover:bg-[#DFC6C8]"
+                )}
+            >
+                <LayoutDashboard className="w-3 h-3" />
+                Admin
+            </Link>
+        );
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -109,13 +133,18 @@ export function Navbar() {
                             </SignUpButton>
                         </Show>
                         <Show when="signed-in">
-                            <UserButton />
+                            <AdminLink />
+                            <UserButton>
+                                <UserButton.MenuItems>
+                                    <UserButton.Link label="My Profile" labelIcon={<LayoutDashboard className="w-4 h-4" />} href="/profile" />
+                                </UserButton.MenuItems>
+                            </UserButton>
                         </Show>
                     </div>
 
                     <Button
                         asChild
-                        className="ml-2 rounded-full border border-[#DFC6C8]/30 bg-transparent text-[#DFC6C8] hover:bg-[#DFC6C8]/10 font-semibold px-6 cursor-pointer hidden lg:flex"
+                        className="ml-2 rounded-full gradient-rose text-[#130E0E] font-semibold px-6 hover-glow border-0 hidden lg:flex"
                     >
                         <Link href="/booking">Book Now</Link>
                     </Button>
@@ -211,7 +240,21 @@ export function Navbar() {
                                     <Show when="signed-in">
                                         <div className="flex flex-col items-center gap-4 p-6 bg-[#130E0E]/5 rounded-3xl border border-[#130E0E]/5">
                                             <span className="text-sm font-medium text-[#130E0E]/60 uppercase tracking-widest">Your Account</span>
-                                            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-16 h-16" } }} />
+                                            <div className="flex items-center gap-4">
+                                                <UserButton appearance={{ elements: { userButtonAvatarBox: "w-16 h-16" } }} />
+                                                {isAdmin && (
+                                                    <Link 
+                                                        href="/admin" 
+                                                        onClick={() => setIsMobileMenuOpen(false)}
+                                                        className="flex flex-col items-center gap-1 group"
+                                                    >
+                                                        <div className="w-16 h-16 rounded-full bg-[#130E0E] flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                                                            <LayoutDashboard className="w-8 h-8" />
+                                                        </div>
+                                                        <span className="text-[10px] font-bold uppercase tracking-tighter">Admin</span>
+                                                    </Link>
+                                                )}
+                                            </div>
                                         </div>
                                     </Show>
 

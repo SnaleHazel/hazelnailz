@@ -2,7 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Shield, Sparkles, Heart, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function About() {
     return (
@@ -12,14 +12,10 @@ export default function About() {
             {/* Hero Section */}
             <section className="relative pt-32 pb-24 overflow-hidden">
                 <div className="absolute inset-0 bg-[#130E0E]"></div>
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-15"></div>
+                <div className="absolute inset-0 bg-[url('/images/1773975778849.jpg')] bg-cover bg-center opacity-15"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-[#130E0E]/50 to-[#130E0E]"></div>
 
                 <div className="container mx-auto px-6 relative z-10 text-center">
-                    <div className="inline-flex items-center gap-2 glass-dark rounded-full px-5 py-2 mb-6">
-                        <Heart className="w-4 h-4 text-[#DFC6C8]" />
-                        <span className="text-sm font-medium text-[#DFC6C8]/90 tracking-wide">Est. 2020</span>
-                    </div>
                     <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-4">
                         Our <span className="text-gradient-rose">Story</span>
                     </h1>
@@ -36,14 +32,11 @@ export default function About() {
                         {/* Image Side */}
                         <div className="relative">
                             <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
-                                <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=2069&auto=format&fit=crop')] bg-cover bg-center"></div>
+                                <div className="w-full h-full bg-[url('/images/1773975778874.jpg')] bg-cover bg-center"></div>
                             </div>
                             {/* Floating accent */}
                             <div className="absolute -bottom-6 -right-6 glass rounded-2xl p-6 shadow-xl max-w-xs">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-10 h-10 rounded-full gradient-rose flex items-center justify-center">
-                                        <Sparkles className="w-5 h-5 text-[#130E0E]" />
-                                    </div>
                                     <span className="font-serif text-lg font-bold text-[#130E0E]">5+ Years</span>
                                 </div>
                                 <p className="text-sm text-[#130E0E]/60">Of crafting iconic nail experiences</p>
@@ -96,25 +89,19 @@ export default function About() {
                                 number: "01",
                                 title: "Hygiene First",
                                 description: "Medical-grade sterilization for every tool. Your health is non-negotiable.",
-                                icon: Shield
                             },
                             {
                                 number: "02",
                                 title: "Premium Products",
                                 description: "Only high-end, hypoallergenic gels and acrylics that last.",
-                                icon: Sparkles
                             },
                             {
                                 number: "03",
                                 title: "Pure Artistry",
                                 description: "From minimalist structured gel to intricate hand-painted masterpieces.",
-                                icon: Heart
                             }
                         ].map((value, i) => (
                             <div key={i} className="glass-dark rounded-2xl p-8 text-center hover-lift cursor-pointer group">
-                                <div className="w-16 h-16 rounded-2xl gradient-rose flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                                    <value.icon className="w-8 h-8 text-[#130E0E]" />
-                                </div>
                                 <span className="text-[#DFC6C8] font-mono text-sm mb-2 block">{value.number}</span>
                                 <h3 className="font-serif text-2xl font-bold text-white mb-3">{value.title}</h3>
                                 <p className="text-[#B6AFAE] leading-relaxed">{value.description}</p>

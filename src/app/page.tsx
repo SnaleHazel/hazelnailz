@@ -2,7 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Star, Shield, Heart } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
@@ -42,7 +42,7 @@ export default function Home() {
           <div className="order-1 md:order-2 relative h-[50vh] md:h-[80vh] w-full animate-in fade-in slide-in-from-right-8 duration-1000 delay-200">
             <div className="absolute inset-0 bg-[#D4AF37]/10 rounded-full blur-3xl transform translate-x-10 translate-y-10 -z-10"></div>
             <img
-              src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=2670&auto=format&fit=crop"
+              src="/images/1773975778727.jpg"
               alt="Model with elegant nails"
               className="w-full h-full object-cover object-top mask-image-fade rounded-3xl"
             />
@@ -76,26 +76,20 @@ export default function Home() {
               {
                 title: "Premium Products",
                 description: "Only hypoallergenic, salon-grade products that ensure your nails are as healthy as they are beautiful.",
-                icon: Sparkles,
               },
               {
                 title: "Artistry & Precision",
                 description: "Each set is crafted with meticulous attention to detail, creating wearable works of art.",
-                icon: Star,
               },
               {
                 title: "Luxe Experience",
                 description: "From booking to aftercare, enjoy a seamless, premium experience designed around you.",
-                icon: Heart,
               },
             ].map((feature, i) => (
               <div
                 key={i}
                 className="group glass rounded-2xl p-8 hover-lift cursor-pointer"
               >
-                <div className="w-14 h-14 rounded-xl gradient-rose flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <feature.icon className="w-7 h-7 text-[#130E0E]" />
-                </div>
                 <h3 className="font-serif text-2xl font-semibold mb-3 text-[#130E0E]">{feature.title}</h3>
                 <p className="text-[#130E0E]/60 leading-relaxed">{feature.description}</p>
               </div>
@@ -147,18 +141,18 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden glass-dark">
-                  <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800&auto=format&fit=crop&q=60')] bg-cover bg-center hover:scale-105 transition-transform duration-500"></div>
+                  <div className="w-full h-full bg-[url('/images/1773975778751.jpg')] bg-cover bg-center hover:scale-105 transition-transform duration-500"></div>
                 </div>
                 <div className="aspect-square rounded-2xl overflow-hidden glass-dark">
-                  <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?w=800&auto=format&fit=crop&q=60')] bg-cover bg-center hover:scale-105 transition-transform duration-500"></div>
+                  <div className="w-full h-full bg-[url('/images/1773975778776.jpg')] bg-cover bg-center hover:scale-105 transition-transform duration-500"></div>
                 </div>
               </div>
               <div className="space-y-4 pt-8">
                 <div className="aspect-square rounded-2xl overflow-hidden glass-dark">
-                  <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=60')] bg-cover bg-center hover:scale-105 transition-transform duration-500"></div>
+                  <div className="w-full h-full bg-[url('/images/1773975778800.jpg')] bg-cover bg-center hover:scale-105 transition-transform duration-500"></div>
                 </div>
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden glass-dark">
-                  <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1596462502278-27bfdd403322?w=800&auto=format&fit=crop&q=60')] bg-cover bg-center hover:scale-105 transition-transform duration-500"></div>
+                  <div className="w-full h-full bg-[url('/images/1773975778824.jpg')] bg-cover bg-center hover:scale-105 transition-transform duration-500"></div>
                 </div>
               </div>
             </div>

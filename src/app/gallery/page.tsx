@@ -7,21 +7,47 @@ import Link from "next/link";
 import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "@/lib/lightbox.css";
-import { Camera, ArrowRight, Sparkles, ZoomIn } from "lucide-react";
+import { ArrowRight, ZoomIn } from "lucide-react";
 
 // Gallery images with bento grid sizing
 const photos = [
-    { src: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800&auto=format&fit=crop&q=60", span: "col-span-2 row-span-2" },
-    { src: "https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?w=800&auto=format&fit=crop&q=60", span: "col-span-1 row-span-1" },
-    { src: "https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?w=800&auto=format&fit=crop&q=60", span: "col-span-1 row-span-1" },
-    { src: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=60", span: "col-span-1 row-span-2" },
-    { src: "https://images.unsplash.com/photo-1599694726588-306c59b20756?w=800&auto=format&fit=crop&q=60", span: "col-span-1 row-span-1" },
-    { src: "https://images.unsplash.com/photo-1596462502278-27bfdd403322?w=800&auto=format&fit=crop&q=60", span: "col-span-2 row-span-1" },
-    { src: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800&auto=format&fit=crop&q=60", span: "col-span-1 row-span-1" },
-    { src: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=60", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975778655.jpg", span: "col-span-2 row-span-2" },
+    { src: "/images/1773975778682.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975778704.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975778727.jpg", span: "col-span-1 row-span-2" },
+    { src: "/images/1773975778751.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975778776.jpg", span: "col-span-2 row-span-1" },
+    { src: "/images/1773975778800.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975778824.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975778849.jpg", span: "col-span-2 row-span-2" },
+    { src: "/images/1773975778874.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975778899.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975778922.jpg", span: "col-span-1 row-span-2" },
+    { src: "/images/1773975778943.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975778964.jpg", span: "col-span-2 row-span-1" },
+    { src: "/images/1773975778987.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779020.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779053.jpg", span: "col-span-2 row-span-2" },
+    { src: "/images/1773975779076.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779101.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779124.jpg", span: "col-span-1 row-span-2" },
+    { src: "/images/1773975779149.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779173.jpg", span: "col-span-2 row-span-1" },
+    { src: "/images/1773975779198.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779224.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779248.jpg", span: "col-span-2 row-span-2" },
+    { src: "/images/1773975779271.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779293.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779316.jpg", span: "col-span-1 row-span-2" },
+    { src: "/images/1773975779340.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779365.jpg", span: "col-span-2 row-span-1" },
+    { src: "/images/1773975779387.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779411.jpg", span: "col-span-1 row-span-1" },
+    { src: "/images/1773975779435.jpg", span: "col-span-2 row-span-2" },
+    { src: "/images/1773975779459.jpg", span: "col-span-1 row-span-1" },
 ];
 
-const categories = ["All", "Acrylic", "Gel", "Nail Art", "Toes"];
+const categories = ["All", "Acrylic", "Gel", "Nail Art"];
 
 export default function Gallery() {
     const [index, setIndex] = useState(-1);
@@ -34,13 +60,12 @@ export default function Gallery() {
             {/* Hero Section */}
             <section className="relative pt-32 pb-20 overflow-hidden">
                 <div className="absolute inset-0 bg-[#130E0E]"></div>
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-15"></div>
+                <div className="absolute inset-0 bg-[url('/images/1773975779198.jpg')] bg-cover bg-center opacity-15"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-[#130E0E]/50 to-[#130E0E]"></div>
 
                 <div className="container mx-auto px-6 relative z-10 text-center">
-                    <div className="inline-flex items-center gap-2 glass-dark rounded-full px-5 py-2 mb-6">
-                        <Camera className="w-4 h-4 text-[#DFC6C8]" />
-                        <span className="text-sm font-medium text-[#DFC6C8]/90 tracking-wide">Our Work</span>
+                    <div className="mb-6">
+                        <span className="text-sm font-medium text-[#DFC6C8]/90 tracking-wider uppercase">Our Work</span>
                     </div>
                     <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-4">
                         <span className="text-gradient-rose">Portfolio</span>
@@ -112,8 +137,8 @@ export default function Gallery() {
                 <div className="absolute inset-0 pattern-dots opacity-20"></div>
 
                 <div className="container mx-auto px-6 relative z-10 text-center">
-                    <div className="inline-flex items-center gap-2 mb-6">
-                        <Sparkles className="w-5 h-5 text-[#DFC6C8]" />
+                    <div className="mb-6">
+                        <span className="text-sm font-medium text-[#DFC6C8]/90 tracking-wider uppercase">Our Work</span>
                     </div>
                     <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-6">
                         Love What You See?

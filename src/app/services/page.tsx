@@ -2,7 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Sparkles, Gift, Star, ArrowRight } from "lucide-react";
+import { Gift, ArrowRight } from "lucide-react";
 
 const services = [
     {
@@ -57,12 +57,12 @@ export default function Services() {
             {/* Hero Section */}
             <section className="relative pt-32 pb-24 overflow-hidden">
                 <div className="absolute inset-0 bg-[#130E0E]"></div>
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-15"></div>
+                <div className="absolute inset-0 bg-[url('/images/1773975778899.jpg')] bg-cover bg-center opacity-15"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-[#130E0E]/50 to-[#130E0E]"></div>
 
                 <div className="container mx-auto px-6 relative z-10 text-center">
                     <div className="inline-flex items-center gap-2 glass-dark rounded-full px-5 py-2 mb-6">
-                        <Sparkles className="w-4 h-4 text-[#DFC6C8]" />
+                        
                         <span className="text-sm font-medium text-[#DFC6C8]/90 tracking-wide">2025 Price List</span>
                     </div>
                     <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-4">
@@ -137,7 +137,7 @@ export default function Services() {
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="text-center mb-12">
                         <div className="inline-flex items-center gap-2 mb-4">
-                            <Gift className="w-5 h-5 text-[#DFC6C8]" />
+                            
                             <span className="text-[#DFC6C8] font-semibold tracking-widest uppercase text-sm">Special Offers</span>
                         </div>
                         <h3 className="font-serif text-4xl font-bold text-white">Client Incentives</h3>
@@ -148,23 +148,20 @@ export default function Services() {
                             {
                                 title: "Toe Tuesdays & Wellness Wednesdays",
                                 offer: "25% off toe services",
-                                icon: Star
+                                
                             },
                             {
                                 title: "Refer & Reward",
                                 offer: "R100 off your next appointment",
-                                icon: Gift
+                                
                             },
                             {
                                 title: "Loyalty Love",
                                 offer: "5th visit is 50% off!",
-                                icon: Sparkles
+                                
                             },
                         ].map((incentive, i) => (
                             <div key={i} className="glass-dark rounded-2xl p-6 text-center hover-lift cursor-pointer">
-                                <div className="w-12 h-12 rounded-xl gradient-rose flex items-center justify-center mx-auto mb-4">
-                                    <incentive.icon className="w-6 h-6 text-[#130E0E]" />
-                                </div>
                                 <h4 className="font-semibold text-white mb-2">{incentive.title}</h4>
                                 <p className="text-[#DFC6C8] font-medium">{incentive.offer}</p>
                             </div>
