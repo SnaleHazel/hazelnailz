@@ -12,6 +12,7 @@ export const createBooking = mutation({
     services: v.array(v.string()),
     totalAmount: v.number(),
     depositAmount: v.number(),
+    durationMinutes: v.optional(v.number()),
     notes: v.optional(v.string()),
     userId: v.string(),
   },
@@ -38,7 +39,7 @@ export const confirmBooking = mutation({
   },
 });
 
-// Get booked slots for a specific date
+// Get booked slots for a specific date — returns time + duration for overlap calc
 export const getBookedSlots = query({
   args: { date: v.string() },
   handler: async (ctx, args) => {
@@ -56,7 +57,11 @@ export const getBookedSlots = query({
       (b.status === "pending" && b._creationTime > fifteenMinutesAgo)
     );
     
-    return activeBookings.map((b) => b.time);
+    // Return time + durationMinutes so the frontend can compute overlapping slots
+    return activeBookings.map((b) => ({
+      time: b.time,
+      durationMinutes: b.durationMinutes ?? 60, // default 1h for legacy bookings
+    }));
   },
 });
 
@@ -66,22 +71,23 @@ export const getFullyBookedDays = query({
     const now = Date.now();
     const fifteenMinutesAgo = now - 15 * 60 * 1000;
 
-    // We can iterate over all recent bookings, but for scale, 
-    // we'll just check all paid + recent pending
     const bookings = await ctx.db
       .query("bookings")
       .collect();
 
-    const counts: Record<string, number> = {};
+    // Group bookings by date and calculate total 30-min slots consumed
+    const slotsPerDay: Record<string, number> = {};
     bookings.forEach((b) => {
       const isActive = b.status === "paid" || (b.status === "pending" && b._creationTime > fifteenMinutesAgo);
       if (isActive) {
-        counts[b.date] = (counts[b.date] || 0) + 1;
+        const durationSlots = Math.ceil((b.durationMinutes ?? 60) / 30);
+        slotsPerDay[b.date] = (slotsPerDay[b.date] || 0) + durationSlots;
       }
     });
 
-    const maxSlots = 7; 
-    return Object.keys(counts).filter((date) => counts[date] >= maxSlots);
+    // 18 half-hour slots (7am through 3:30pm)
+    const maxSlots = 18;
+    return Object.keys(slotsPerDay).filter((date) => slotsPerDay[date] >= maxSlots);
   },
 });
 
@@ -94,3 +100,16 @@ export const cancelBooking = mutation({
     });
   },
 });
+
+// Get all bookings for a specific user
+export const getUserBookings = query({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("bookings")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .order("desc")
+      .collect();
+  },
+});
+

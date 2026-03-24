@@ -17,6 +17,7 @@ export default defineSchema({
       v.literal("cancelled")
     ),
     paystackReference: v.optional(v.string()),
+    durationMinutes: v.optional(v.number()), // Total service duration in minutes
     notes: v.optional(v.string()),
     userId: v.string(), // Clerk user ID
   })

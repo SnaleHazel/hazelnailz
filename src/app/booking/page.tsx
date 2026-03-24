@@ -5,27 +5,27 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { cn } from "@/lib/utils";
-import { Check, ChevronRight, Loader2, Calendar, AlertCircle } from "lucide-react";
+import { Check, ChevronRight, Loader2, Calendar, AlertCircle, Clock } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import Script from "next/script";
 import { format } from "date-fns";
 import { useForm } from "@formspree/react";
+import {
+    bookableServices,
+    TIME_SLOTS,
+    formatDuration,
+    roundUpTo30,
+    getBlockedSlots,
+    wouldConflict,
+    timeToMinutes,
+} from "@/lib/serviceData";
 
-// Mock Services Data
-const serviceOptions = [
-    { id: "acrylic-new", name: "Acrylic New Set", price: 300 },
-    { id: "acrylic-refill", name: "Acrylic Refill", price: 250 },
-    { id: "gel-overlay", name: "Gel Overlay", price: 250 },
-    { id: "toes-overlay", name: "Toes Overlay", price: 200 },
-    { id: "soak-off", name: "Soak Off", price: 50 },
-    { id: "nail-art", name: "Nail Art Add-on", price: 50 },
-];
 
 export default function Booking() {
     const { user } = useUser();
@@ -35,13 +35,12 @@ export default function Booking() {
     const [time, setTime] = useState<string | undefined>();
     const [formData, setFormData] = useState({ name: "", email: "", phone: "", notes: "" });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // Local session cache for immediately locking slots they just booked
     const [bookingId, setBookingId] = useState<string | null>(null);
 
     const formattedDate = date ? format(date, "yyyy-MM-dd") : null;
 
     // Local session cache for immediately locking slots they just booked
-    const [locallyBookedSlots, setLocallyBookedSlots] = useState<string[]>([]);
+    const [locallyBookedSlots, setLocallyBookedSlots] = useState<{ time: string; durationMinutes: number }[]>([]);
 
     useEffect(() => {
         if (!formattedDate) return;
@@ -49,10 +48,22 @@ export default function Booking() {
         if (saved) setLocallyBookedSlots(JSON.parse(saved));
         else setLocallyBookedSlots([]);
     }, [formattedDate]);
-    const bookedSlots = useQuery(api.bookings.getBookedSlots, 
+
+    const bookedSlotsRaw = useQuery(api.bookings.getBookedSlots,
         formattedDate ? { date: formattedDate } : "skip"
     );
     const fullyBookedDays = useQuery(api.bookings.getFullyBookedDays);
+
+    // Merge server + locally cached bookings
+    const allBookedSlots = useMemo(() => {
+        const merged: { time: string; durationMinutes: number }[] = [];
+        if (bookedSlotsRaw) merged.push(...bookedSlotsRaw);
+        merged.push(...locallyBookedSlots);
+        return merged;
+    }, [bookedSlotsRaw, locallyBookedSlots]);
+
+    // Blocked set based on existing bookings and their durations
+    const blockedSlots = useMemo(() => getBlockedSlots(allBookedSlots, TIME_SLOTS), [allBookedSlots]);
 
     // Convex Mutations
     const createBookingMutation = useMutation(api.bookings.createBooking);
@@ -69,12 +80,30 @@ export default function Booking() {
     };
 
     const total = selectedServices.reduce((sum, id) => {
-        const service = serviceOptions.find(s => s.id === id);
+        const service = bookableServices.find(s => s.id === id);
         return sum + (service?.price || 0);
     }, 0);
 
+    // Total duration = sum of all selected service durations
+    const totalDuration = useMemo(() => {
+        return selectedServices.reduce((sum, id) => {
+            const service = bookableServices.find(s => s.id === id);
+            return sum + (service?.durationMinutes || 0);
+        }, 0);
+    }, [selectedServices]);
+
+    const totalDurationRoundedSlots = Math.ceil((totalDuration || 60) / 30);
+
+
     const handleNext = () => setStep(prev => prev + 1);
     const handleBack = () => setStep(prev => prev - 1);
+
+    // Check if selecting this slot would conflict given the user's chosen duration
+    const isSlotAvailable = (slot: string): boolean => {
+        if (blockedSlots.has(slot)) return false;
+        // Also check if the user's booking at this slot would extend into a blocked range
+        return !wouldConflict(slot, totalDuration || 60, allBookedSlots);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -83,7 +112,7 @@ export default function Booking() {
         setIsSubmitting(true);
         try {
             let id = `offline_${Date.now()}`;
-            
+
             // 1. Try to create pending booking in Convex
             if (createBookingMutation) {
                 try {
@@ -98,6 +127,7 @@ export default function Booking() {
                         depositAmount: 100,
                         notes: formData.notes,
                         userId: user.id,
+                        durationMinutes: totalDuration || 60,
                     });
                 } catch (e) {
                     console.warn("Convex mutation failed, proceeding with manual ID for testing:", e);
@@ -121,12 +151,11 @@ export default function Booking() {
                 ref: id,
                 callback: function (response: any) {
                     // 1. Optimistically mark as booked in local storage
+                    const newSlot = { time: time!, durationMinutes: totalDuration || 60 };
                     const currentLocal = JSON.parse(localStorage.getItem(`booked_${formattedDate}`) || "[]");
-                    if (!currentLocal.includes(time)) {
-                        const nextLocal = [...currentLocal, time];
-                        localStorage.setItem(`booked_${formattedDate}`, JSON.stringify(nextLocal));
-                        setLocallyBookedSlots(nextLocal);
-                    }
+                    const nextLocal = [...currentLocal, newSlot];
+                    localStorage.setItem(`booked_${formattedDate}`, JSON.stringify(nextLocal));
+                    setLocallyBookedSlots(nextLocal);
 
                     // 2. Update booking status in Convex & Send Confirmation Email
                     const handleSuccess = async () => {
@@ -151,7 +180,7 @@ Looking forward to seeing you soon and making your nails look iconic!
 love, Ikonique`,
                                 date: formattedDate,
                                 time: time,
-                                services: selectedServices.map(sid => serviceOptions.find(so => so.id === sid)?.name).join(", "),
+                                services: selectedServices.map(sid => bookableServices.find(so => so.id === sid)?.name).join(", "),
                                 phone: formData.phone,
                                 name: formData.name
                             });
@@ -209,7 +238,7 @@ love, Ikonique`,
                                     <div className="space-y-6 animate-in fade-in slide-in-from-right-8">
                                         <h2 className="text-xl font-bold text-[#130E0E]">Select Services</h2>
                                         <div className="grid md:grid-cols-2 gap-4">
-                                            {serviceOptions.map(service => (
+                                            {bookableServices.map(service => (
                                                 <div
                                                     key={service.id}
                                                     onClick={() => toggleService(service.id)}
@@ -220,7 +249,15 @@ love, Ikonique`,
                                                             : "border-[#D7C2C2]/50 hover:border-[#DFC6C8]/50"
                                                     )}
                                                 >
-                                                    <span className="font-medium text-[#130E0E]">{service.name}</span>
+                                                    <div>
+                                                        <span className="font-medium text-[#130E0E]">{service.name}</span>
+                                                        {service.durationMinutes > 0 && (
+                                                            <span className="flex items-center gap-1 text-xs text-[#130E0E]/45 mt-0.5">
+                                                                <Clock className="w-3 h-3" />
+                                                                {formatDuration(service.durationMinutes)}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                     <div className="text-right">
                                                         <div className="font-bold text-[#CFBDBE]">R{service.price}</div>
                                                         {selectedServices.includes(service.id) && <Check size={16} className="text-[#DFC6C8] ml-auto mt-1" />}
@@ -228,8 +265,16 @@ love, Ikonique`,
                                                 </div>
                                             ))}
                                         </div>
-                                        <div className="flex justify-between items-center pt-6 border-t border-[#D7C2C2]">
-                                            <div className="font-bold text-lg text-[#130E0E]">Total: R{total}</div>
+                                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-6 border-t border-[#D7C2C2]">
+                                            <div>
+                                                <div className="font-bold text-lg text-[#130E0E]">Total: R{total}</div>
+                                                {totalDuration > 0 && (
+                                                    <div className="flex items-center gap-1 text-sm text-[#130E0E]/50">
+                                                        <Clock className="w-3.5 h-3.5" />
+                                                        Est. {formatDuration(totalDuration)}
+                                                    </div>
+                                                )}
+                                            </div>
                                             <Button onClick={handleNext} disabled={selectedServices.length === 0} className="rounded-full px-8 gradient-rose text-[#130E0E] font-semibold hover-glow cursor-pointer">
                                                 Next <ChevronRight size={16} className="ml-2" />
                                             </Button>
@@ -240,7 +285,9 @@ love, Ikonique`,
                                 {/* Step 2: Date & Time */}
                                 {step === 2 && (
                                     <div className="space-y-6 animate-in fade-in slide-in-from-right-8">
-                                        <h2 className="text-xl font-bold text-[#130E0E]">Select Date & Time</h2>
+                                        <div>
+                                            <h2 className="text-xl font-bold text-[#130E0E]">Select Date & Time</h2>
+                                        </div>
                                         <div className="flex flex-col md:flex-row gap-8 justify-center">
                                             <div className="bg-white p-4 rounded-xl shadow-sm border border-[#D7C2C2]/50">
                                                 <DayPicker
@@ -261,18 +308,19 @@ love, Ikonique`,
                                             <div className="flex-1 space-y-4">
                                                 <div className="flex justify-between items-center">
                                                     <h3 className="font-medium text-sm text-[#B6AFAE] uppercase tracking-wide">Available Slots</h3>
-                                                    {!bookedSlots && date && <Loader2 className="w-4 h-4 animate-spin text-[#DFC6C8]" />}
+                                                    {!bookedSlotsRaw && date && <Loader2 className="w-4 h-4 animate-spin text-[#DFC6C8]" />}
                                                 </div>
-                                                <div className="grid grid-cols-2 gap-3">
-                                                    {["09:00", "10:00", "11:30", "13:00", "14:30", "16:00", "17:30"].map(t => {
-                                                        const isBooked = bookedSlots?.includes(t) || locallyBookedSlots.includes(t);
+                                                <div className="grid grid-cols-3 gap-3">
+                                                    {TIME_SLOTS.map(t => {
+                                                        const available = isSlotAvailable(t);
+                                                        const isBooked = !available;
                                                         return (
                                                             <button
                                                                 key={t}
                                                                 disabled={isBooked}
                                                                 onClick={() => setTime(t)}
                                                                 className={cn(
-                                                                    "py-2 px-4 rounded-lg text-sm border transition-all cursor-pointer relative",
+                                                                    "py-2 px-3 rounded-lg text-sm border transition-all cursor-pointer relative",
                                                                     time === t
                                                                         ? "gradient-rose text-[#130E0E] border-[#DFC6C8] font-semibold"
                                                                         : isBooked
@@ -280,7 +328,7 @@ love, Ikonique`,
                                                                             : "border-[#D7C2C2]/50 hover:border-[#DFC6C8]/50 text-[#130E0E]/70"
                                                                 )}
                                                             >
-                                                                {t} {['17:30'].includes(t) && <span className="text-[10px] block opacity-70">(+R100)</span>}
+                                                                {t}
                                                                 {isBooked && <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold uppercase tracking-tighter opacity-20">Full</span>}
                                                             </button>
                                                         );
@@ -361,6 +409,12 @@ love, Ikonique`,
                                                 <span className="text-[#130E0E]/70">Service Total</span>
                                                 <span className="font-bold text-[#130E0E]">R{total}</span>
                                             </div>
+                                            {totalDuration > 0 && (
+                                                <div className="flex justify-between border-b border-[#DFC6C8]/20 pb-2">
+                                                    <span className="text-[#130E0E]/70 flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> Duration</span>
+                                                    <span className="font-medium text-[#130E0E]">{formatDuration(totalDuration)}</span>
+                                                </div>
+                                            )}
                                             <div className="flex justify-between border-b border-[#DFC6C8]/20 pb-2 text-[#130E0E]">
                                                 <span className="font-bold">Deposit Due Now</span>
                                                 <span className="font-bold text-lg">R100.00</span>

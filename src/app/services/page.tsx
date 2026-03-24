@@ -2,52 +2,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Gift, ArrowRight } from "lucide-react";
-
-const services = [
-    {
-        category: "Acrylic",
-        description: "Long-lasting, durable extensions with flawless finish",
-        items: [
-            { name: "New Set (Plain)", price: "R300" },
-            { name: "Refill (Plain)", price: "R250" },
-            { name: "French Set (on new set)", price: "R350" },
-            { name: "Ombré Tips", price: "R300" },
-            { name: "Overlay with Tips", price: "R300" },
-        ]
-    },
-    {
-        category: "Gel & Rubber Base",
-        description: "Flexible, natural-looking enhancements",
-        items: [
-            { name: "Rubber Base", price: "R200" },
-            { name: "Gel Overlay", price: "R250" },
-            { name: "Structured Lastik Gel", price: "R300" },
-            { name: "Structured Gel Refill", price: "R250" },
-        ]
-    },
-    {
-        category: "Toes",
-        description: "Pamper your feet with our luxury pedicure services",
-        items: [
-            { name: "Natural Toe Nails", price: "R150" },
-            { name: "Overlay on Toes", price: "R200" },
-            { name: "French Tip Toes", price: "R200" },
-        ]
-    },
-    {
-        category: "Nail Art & Extras",
-        description: "Custom designs to express your unique style",
-        items: [
-            { name: "Nail Art (Foil, Chrome, Glitter)", price: "From R15" },
-            { name: "Full Stones", price: "R100" },
-            { name: "Charms / Bows", price: "R10 each" },
-            { name: "Extra Length", price: "R50" },
-            { name: "Soak Off", price: "R50" },
-            { name: "Repair", price: "R20" },
-        ]
-    }
-];
+import { ArrowRight, Clock } from "lucide-react";
+import { services, formatDuration } from "@/lib/serviceData";
 
 export default function Services() {
     return (
@@ -118,9 +74,18 @@ export default function Services() {
                                                 {item.name}
                                             </span>
                                         </div>
-                                        <span className="font-bold text-[#CFBDBE] text-lg">
-                                            {item.price}
-                                        </span>
+                                        <div className="flex items-center gap-3">
+                                            {/* Duration Badge */}
+                                            {item.durationMinutes > 0 && (
+                                                <span className="inline-flex items-center gap-1 text-xs font-medium text-[#130E0E]/50 bg-[#DFC6C8]/15 rounded-full px-2.5 py-1">
+                                                    <Clock className="w-3 h-3" />
+                                                    {formatDuration(item.durationMinutes)}
+                                                </span>
+                                            )}
+                                            <span className="font-bold text-[#CFBDBE] text-lg">
+                                                {item.price}
+                                            </span>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
