@@ -17,10 +17,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { useUser } from "@clerk/nextjs";
+import { isUserAdmin } from "@/lib/admin";
 
 export default function AdminClients() {
     const { isLoaded, user } = useUser();
-    const isAdmin = user?.primaryEmailAddress?.emailAddress === "lgumbi2169@gmail.com";
+    const isAdmin = isUserAdmin(user);
 
     const [searchTerm, setSearchTerm] = useState("");
     const clients = useQuery(api.admin.listClients, !isAdmin ? "skip" : {});

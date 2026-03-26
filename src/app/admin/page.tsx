@@ -14,10 +14,11 @@ import {
 import { motion } from "framer-motion";
 
 import { useUser } from "@clerk/nextjs";
+import { isUserAdmin } from "@/lib/admin";
 
 export default function AdminDashboard() {
     const { isLoaded, isSignedIn, user } = useUser();
-    const isAdmin = user?.primaryEmailAddress?.emailAddress === "lgumbi2169@gmail.com";
+    const isAdmin = isUserAdmin(user);
     
     const stats = useQuery(api.admin.getDashboardStats, !isAdmin ? "skip" : {});
     const recentBookings = useQuery(api.admin.listAllBookings, !isAdmin ? "skip" : { limit: 5 });

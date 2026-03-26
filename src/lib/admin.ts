@@ -1,6 +1,7 @@
 export const ADMIN_EMAILS = [
     "lgumbi2169@gmail.com",
     "luazii@hazelnailz.co.za", // Placeholder if it's an email
+    "contact@ikonique.co.za",
 ];
 
 export const isUserAdmin = (user: any) => {

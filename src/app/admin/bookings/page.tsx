@@ -20,10 +20,11 @@ import { format } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useUser } from "@clerk/nextjs";
+import { isUserAdmin } from "@/lib/admin";
 
 export default function AdminBookings() {
     const { isLoaded, user } = useUser();
-    const isAdmin = user?.primaryEmailAddress?.emailAddress === "lgumbi2169@gmail.com";
+    const isAdmin = isUserAdmin(user);
 
     const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
     const [searchTerm, setSearchTerm] = useState("");

@@ -236,7 +236,12 @@ love, Ikonique`,
                                 {/* Step 1: Services */}
                                 {step === 1 && (
                                     <div className="space-y-6 animate-in fade-in slide-in-from-right-8">
-                                        <h2 className="text-xl font-bold text-[#130E0E]">Select Services</h2>
+                                        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                                            <h2 className="text-xl font-bold text-[#130E0E]">Select Services</h2>
+                                            <p className="text-xs text-[#130E0E]/60 bg-[#DFC6C8]/10 px-3 py-1.5 rounded-lg border border-[#DFC6C8]/20 italic">
+                                                Note: Prices are for plain sets. Nail art/decoration is charged separately.
+                                            </p>
+                                        </div>
                                         <div className="grid md:grid-cols-2 gap-4">
                                             {bookableServices.map(service => (
                                                 <div

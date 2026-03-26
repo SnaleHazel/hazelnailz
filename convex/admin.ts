@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 
 // Server-side admin access control via Clerk JWT
-const ADMIN_EMAILS = ["lgumbi2169@gmail.com"];
+const ADMIN_EMAILS = ["lgumbi2169@gmail.com", "contact@ikonique.co.za"];
 
 const checkAdmin = async (ctx: any) => {
     const identity = await ctx.auth.getUserIdentity();

@@ -24,9 +24,15 @@ export default function Services() {
                     <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-4">
                         Service <span className="text-gradient-rose">Menu</span>
                     </h1>
-                    <p className="text-lg text-[#B6AFAE] max-w-2xl mx-auto">
+                    <p className="text-lg text-[#B6AFAE] max-w-2xl mx-auto mb-6">
                         Premium nail services crafted with precision and luxury in mind
                     </p>
+                    <div className="inline-block glass-dark rounded-lg px-6 py-3 border border-[#DFC6C8]/20">
+                        <p className="text-sm text-[#DFC6C8]/80 font-medium">
+                            <span className="text-[#DFC6C8] font-bold">Note:</span> Prices shown are for plain sets. 
+                            Nail art and decoration are charged separately.
+                        </p>
+                    </div>
                 </div>
             </section>
 

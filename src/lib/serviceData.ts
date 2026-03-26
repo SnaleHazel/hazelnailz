@@ -23,37 +23,35 @@ export const services: ServiceCategory[] = [
         category: "Acrylic",
         description: "Long-lasting, durable extensions with flawless finish",
         items: [
-            { name: "New Set (Plain)", price: "R300", durationMinutes: 120 },
-            { name: "Refill (Plain)", price: "R250", durationMinutes: 120 },
-            { name: "French Set (on new set)", price: "R350", durationMinutes: 120 },
-            { name: "Ombré Tips", price: "R300", durationMinutes: 120 },
-            { name: "Overlay with Tips", price: "R300", durationMinutes: 120 },
+            { name: "Acrylic Tips (Plain)", price: "R300", durationMinutes: 120 },
+            { name: "Acrylic Refill", price: "R250", durationMinutes: 120 },
+            { name: "Acrylic Overlay", price: "R250", durationMinutes: 120 },
+            { name: "Acrylic Toes", price: "R200", durationMinutes: 60 },
         ]
     },
     {
         category: "Gel & Rubber Base",
         description: "Flexible, natural-looking enhancements",
         items: [
-            { name: "Rubber Base", price: "R200", durationMinutes: 120 },
-            { name: "Gel Overlay", price: "R250", durationMinutes: 60 },
-            { name: "Structured Lastik Gel", price: "R300", durationMinutes: 90 },
-            { name: "Structured Gel Refill", price: "R250", durationMinutes: 90 },
+            { name: "Rubber Base", price: "R300", durationMinutes: 90 },
+            { name: "Rubber Base Refill", price: "R250", durationMinutes: 90 },
+            { name: "Structured Gel", price: "R250", durationMinutes: 90 },
+            { name: "Unstructured Gel", price: "R200", durationMinutes: 60 },
         ]
     },
     {
         category: "Gel Tips",
         description: "Seamless gel tip extensions for a natural look",
         items: [
-            { name: "Gel Tips Full Set", price: "R350", durationMinutes: 120 },
+            { name: "Gel Tips (Plain)", price: "R300", durationMinutes: 120 },
         ]
     },
     {
         category: "Toes",
         description: "Pamper your feet with our luxury pedicure services",
         items: [
-            { name: "Natural Toe Nails", price: "R150", durationMinutes: 60 },
-            { name: "Overlay on Toes", price: "R200", durationMinutes: 60 },
-            { name: "French Tip Toes", price: "R200", durationMinutes: 60 },
+            { name: "Gel Toes", price: "R200", durationMinutes: 60 },
+            { name: "Acrylic Toes", price: "R200", durationMinutes: 60 },
         ]
     },
     {
@@ -72,12 +70,15 @@ export const services: ServiceCategory[] = [
 
 // ── Booking Page Data ───────────────────────────────────────────────
 export const bookableServices: BookableService[] = [
-    { id: "acrylic-new", name: "Acrylic New Set", price: 300, durationMinutes: 120 },
+    { id: "acrylic-new", name: "Acrylic Tips (Plain)", price: 300, durationMinutes: 120 },
     { id: "acrylic-refill", name: "Acrylic Refill", price: 250, durationMinutes: 120 },
-    { id: "rubber-base", name: "Rubber Base New Set / Fill", price: 200, durationMinutes: 120 },
-    { id: "gel-tips", name: "Gel Tips", price: 350, durationMinutes: 120 },
-    { id: "structured-gel", name: "Structured Gel", price: 300, durationMinutes: 90 },
-    { id: "normal-gel", name: "Normal Gel", price: 250, durationMinutes: 60 },
+    { id: "acrylic-overlay", name: "Acrylic Overlay", price: 250, durationMinutes: 120 },
+    { id: "acrylic-toes", name: "Acrylic Toes", price: 200, durationMinutes: 60 },
+    { id: "rubber-base", name: "Rubber Base", price: 300, durationMinutes: 90 },
+    { id: "rubber-base-refill", name: "Rubber Base Refill", price: 250, durationMinutes: 90 },
+    { id: "gel-tips", name: "Gel Tips (Plain)", price: 300, durationMinutes: 120 },
+    { id: "structured-gel", name: "Structured Gel", price: 250, durationMinutes: 90 },
+    { id: "unstructured-gel", name: "Unstructured Gel", price: 200, durationMinutes: 60 },
     { id: "gel-toes", name: "Gel Toes", price: 200, durationMinutes: 60 },
     { id: "soak-off", name: "Soak Off (Hands)", price: 50, durationMinutes: 45 },
     { id: "nail-art", name: "Nail Art Add-on", price: 50, durationMinutes: 0 },
